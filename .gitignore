@@ -3,3 +3,7 @@
 ################################################################################
 
 /FinancialChat.Tests/bin/Debug
+/FinancialChat/bin
+/FinancialChat/obj
+/FinancialChat.Tests/obj
+/packages
