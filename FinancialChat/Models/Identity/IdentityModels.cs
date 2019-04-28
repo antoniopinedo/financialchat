@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace FinancialChat.Models
+namespace FinancialChat.Models.Identity
 {
     public class ApplicationUser : IdentityUser
     {

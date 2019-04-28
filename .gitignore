@@ -7,3 +7,5 @@
 /FinancialChat/obj
 /FinancialChat.Tests/obj
 /packages
+/.vs/FinancialChat/v15/Server/sqlite3
+/.vs/FinancialChat/v15/.suo

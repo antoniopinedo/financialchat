@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
-namespace FinancialChat.Models
+namespace FinancialChat.Models.Identity
 {
     public class IndexViewModel
     {

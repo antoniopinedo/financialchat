@@ -17,6 +17,8 @@ namespace FinancialChat.Controllers
                 return Redirect("/Account/Login");
             }
 
+            ViewBag.UserName = System.Web.HttpContext.Current.User.Identity.Name;
+
             return View();
         }
     }

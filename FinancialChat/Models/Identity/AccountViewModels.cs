@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FinancialChat.Models
+namespace FinancialChat.Models.Identity
 {
     public class LoginViewModel
     {

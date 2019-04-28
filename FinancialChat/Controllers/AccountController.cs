@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FinancialChat.Models;
+using FinancialChat.Models.Identity;
 
 namespace FinancialChat.Controllers
 {
@@ -57,6 +58,13 @@ namespace FinancialChat.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            bool authenticated = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+
+            if (authenticated)
+            {
+                return Redirect("/Home/Index");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
