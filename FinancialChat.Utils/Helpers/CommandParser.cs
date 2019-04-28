@@ -2,9 +2,12 @@
 
 namespace FinancialChat.Helpers
 {
+    /// <summary>
+    /// Command Parser class
+    /// </summary>
     public class CommandParser
     {
-        private const string regEx = @"^(\/stock=)([A-Z0-9\.^_]+)$";
+        private const string regEx = @"^(\/stock=)([a-zA-Z0-9:\.^_]+)$";
 
         /// <summary>
         /// Parses a command string to extract the stock value

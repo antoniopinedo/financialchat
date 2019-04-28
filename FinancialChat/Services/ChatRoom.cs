@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using FileHelpers;
 using FinancialChat.Helpers;
 using FinancialChat.Models.Chat;
 using Microsoft.AspNet.SignalR;
@@ -60,32 +56,12 @@ namespace FinancialChat.Services
         /// <param name="time">String representation of the time when the message was submitted</param>
         public void ProcessInput(string userName, string message, string time)
         {
-
             if (CommandParser.IsCommand(message))
             {
                 // This is a command for the bot
                 var stockValue = CommandParser.GetStockFromCommand(message);
 
-                // Write the request in the outgoing message queue
-
-                // Triggers the bot process in background
-
-                //TODO: Move this to the bot logic
-                var engine = new FileHelperEngine<StockQuote>();
-                WebClient client = new WebClient();
-                var csvContent = client.DownloadString("https://stooq.com/q/l/?s=" + stockValue + "&f=sd2t2ohlcv&h&e=csv");
-                var record = engine.ReadString(csvContent)[0];
-                var quoteMessage = "";
-                if (record.Close.Equals("N/D"))
-                {
-                    quoteMessage = record.Symbol + " is not a valid Stock Code.";
-                }
-                else
-                {
-                    quoteMessage = record.Symbol + " quote is " + record.Close + "$ per share";
-                }
-
-                Clients.All.printMessage("ChatBot", quoteMessage, time);
+                // Write the request in the outgoing message queue                
             }
             else
             {
@@ -128,27 +104,5 @@ namespace FinancialChat.Services
         }
 
         #endregion
-
-        [IgnoreFirst]
-        [DelimitedRecord(",")]
-        public class StockQuote
-        {
-            public string Symbol { get; set; }
-
-            public string Date { get; set; }
-
-            public string Time { get; set; }
-
-            public string Open { get; set; }
-
-            public string High { get; set; }
-
-            public string Low { get; set; }
-
-            public string Close { get; set; }
-
-            public string Volume { get; set; }
-
-        }
     }
 }

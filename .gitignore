@@ -9,3 +9,6 @@
 /packages
 /.vs/FinancialChat/v15/Server/sqlite3
 /.vs/FinancialChat/v15/.suo
+/ChatBot/obj/Debug
+/FinancialChat.Utils/bin/Debug
+/FinancialChat.Utils/obj/Debug
