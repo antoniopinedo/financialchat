@@ -19,17 +19,17 @@ namespace FinancialChat.Services
         /// <summary>
         /// A List of connected users
         /// </summary>
-        static List<ChatUser> ConnectedUsers = new List<ChatUser>();
+        static readonly List<ChatUser> ConnectedUsers = new List<ChatUser>();
 
         /// <summary>
         /// The messages cache
         /// </summary>
-        static List<Message> MessagesCache = new List<Message>();
+        static readonly List<Message> MessagesCache = new List<Message>();
 
         /// <summary>
         /// The message broker client
         /// </summary>
-        static MessageBrokerFacade MQClient = new MessageBrokerFacade();
+        static readonly MessageBrokerFacade MQClient = new MessageBrokerFacade();
 
         #endregion
 

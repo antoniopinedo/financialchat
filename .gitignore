@@ -15,3 +15,6 @@
 /.vs/FinancialChat/DesignTimeBuild
 /.vs/FinancialChat/v16
 /FinancialChat.ChatBotStarter/obj/Debug
+/FinancialChat.Database/bin/Debug
+/FinancialChat.Database/obj/Debug
+/FinancialChat.Database/Import Schema Logs
