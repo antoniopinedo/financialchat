@@ -12,10 +12,11 @@ Here you will find some instructions to get you a copy of the project up and run
 * Allows registered users to log in and talk with other users in a chatroom.
 * Allow users to post messages as commands into the chatroom with the following format /stock=stock_code
 * Includes a bot that will call the Stooq API to get quotes based on the Stock Symbol.  The bot responds to the chatroom using a message broker. 
-* Invalid commands sent to the bot or exceptions raised are handled.
 * Chat messages are ordered by their timestamps and keeps a cache of the last 50 messages.
 * The project includes unit tests of the code.
-* .NET identity is used for users authentication
+* Bonus:
+>* Invalid commands sent to the bot or exceptions raised are handled.
+>* .NET identity is used for users authentication
 
 
 ### Project Structure
@@ -35,9 +36,9 @@ ChatBot was designed as an independent functionality and isolated in the "Financ
 The ChatBotStarter project is a console application that instantiates the bot and initiates it.  Multiple instances can be run in parallel for escalability.
 
 
-### Installation, Configuration and Deployment
+## Installation, Configuration and Deployment
 
-#### Prerequisites
+### Prerequisites
 
 Financial Chat application connects to MSSQL database and uses message queues.  
 
@@ -45,38 +46,40 @@ Please install the following applications to properly run the application:
 - Microsoft SQL Server (Any version)
 - RabbitMq Server 3.7.14 (requires OTP v20.3)
 
+To configure and deploy the application, MSSQL and RabbitMQ services should be running.
 
-#### Configuration
+
+### Configuration
 
 To configure this application follow these steps:
 
 1. Modify the **web.config** file by changing the Connection String called *"DefaultConnection"* to point to your database server:
 ```
-connectionString="Server=.;Initial Catalog=FinancialChat;Persist Security Info=False;User ID=test;Password=Pass1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+connectionString="Server=.;Initial Catalog=FinancialChat;Persist Security Info=False;
+User ID=test;Password=Pass1234;MultipleActiveResultSets=False;Encrypt=True;
+TrustServerCertificate=True;Connection Timeout=30;"
 ```
 
 2. Create the RabbitMQ users 
+```
+
+```
+
+3. Configure the RabbitMQ settings in **web.config** file:
+```
+
+```
+
+4. In development environment, both Web (FinancialChat) and Console (FinancialChat.ChatBotStarter) applications should be set to start.
 
 
-#### Deployment
+### Deployment
 
 To deploy the application follow these steps:
 
 1. Publish the **"FinancialChat.Database"** project to your MSSQL server instance (can be local or Azure DB).
 2. Publish the **"FinancialChat"** project to IIS from Visual Studio.
 3. Execute the **"FinancialChat.ChatBotStarter"** application manually.
-
-### Running the application
-
-
-
-
-## Automated tests
-
-This application contains Unit Tests for some parts of the code that can be run from Visual Studio IDE.
-
-
-### Running Tests
 
 
 
@@ -94,7 +97,9 @@ This application contains Unit Tests for some parts of the code that can be run 
 
 ## Known limitations and future improvement options
 
+* SignalR framework is based on WebSockets which allows a limited number of concurrent connections.  For escalability, Azure SignalR service can be used.
 * Automate UI tests using selenium framework
+* Include Unit Tests for Javascript files
 
 
 ## External resources
