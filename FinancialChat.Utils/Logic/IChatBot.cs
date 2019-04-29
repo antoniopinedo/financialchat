@@ -9,7 +9,7 @@ namespace ChatBot.Logic
     /// <summary>
     /// Interface for the Financial Chat Bot
     /// </summary>
-    interface IChatBot
+    public interface IChatBot
     {
         /// <summary>
         /// Starts the bot functionality

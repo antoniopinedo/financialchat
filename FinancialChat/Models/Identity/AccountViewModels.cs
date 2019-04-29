@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FinancialChat.Models.Identity
 {
+    /// <summary>
+    /// Login View Form Model
+    /// </summary>
     public class LoginViewModel
     {
         [Required]
@@ -16,6 +19,9 @@ namespace FinancialChat.Models.Identity
         public string Password { get; set; }
     }
 
+    /// <summary>
+    /// Register View Form Model
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]

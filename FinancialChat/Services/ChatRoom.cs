@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FinancialChat.Helpers;
+using FinancialChat.Utils.Helpers;
 using FinancialChat.Models.Chat;
 using Microsoft.AspNet.SignalR;
+using System;
+using FinancialChat.Utils.Models;
+using Newtonsoft.Json;
 
 namespace FinancialChat.Services
 {
@@ -22,6 +25,11 @@ namespace FinancialChat.Services
         /// The messages cache
         /// </summary>
         static List<Message> MessagesCache = new List<Message>();
+
+        /// <summary>
+        /// The message broker client
+        /// </summary>
+        static MessageBrokerFacade MQClient = new MessageBrokerFacade();
 
         #endregion
 
@@ -54,19 +62,34 @@ namespace FinancialChat.Services
         /// <param name="userName">The user initiating the action</param>
         /// <param name="message">The message to be delivered or the command</param>
         /// <param name="time">String representation of the time when the message was submitted</param>
-        public void ProcessInput(string userName, string message, string time)
+        public void ProcessInput(string userName, string message)
         {
+            var time = DateTime.Now.ToString("yyyy-MM-dd, hh:mm:ss");
+            var userId = Context.ConnectionId;
+
             if (CommandParser.IsCommand(message))
             {
                 // This is a command for the bot
                 var stockValue = CommandParser.GetStockFromCommand(message);
 
-                // Write the request in the outgoing message queue                
+                // Build the message for the queue
+                StockMessage messageObject = new StockMessage
+                {
+                    Text = stockValue,
+                    UserId = userId,
+                    UserName = userName
+                };
+
+                // Write the request in the outgoing message queue
+                MQClient.Send("stockRequest", JsonConvert.SerializeObject(messageObject));
+
+                var onlineClient = Clients.Client(userId);
+                onlineClient.printMessage(userName, message, "command", time);
             }
             else
             {
                 // This is a message for the audience
-
+                
                 // Add new message to the cache
                 MessagesCache.Add(new Message { Owner = userName, TextMessage = message, Time = time });
 
@@ -79,8 +102,32 @@ namespace FinancialChat.Services
                 // Persist message to DB?
 
                 // Broad cast message
-                Clients.All.printMessage(userName, message, time);
+                Clients.All.printMessage(userName, message, "normal", time);
             }            
+        }
+
+        /// <summary>
+        /// Publish a message coming from the queue
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static void PublishMessageFromQueue(string message)
+        {
+            StockMessage messageObject = JsonConvert.DeserializeObject<StockMessage>(message);
+            var time = DateTime.Now.ToString("yyyy-MM-dd, hh:mm:ss");
+
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatRoom>();
+
+            var onlineClient = context.Clients.Client(messageObject.UserId);
+            onlineClient.printMessage("ChatBot", messageObject.Text, "result", time);
+        }
+        
+        /// <summary>
+        /// Initializes the Chatroom messages receiver
+        /// </summary>
+        public static void Initialize()
+        {
+            MQClient.Receive("stockResponse", PublishMessageFromQueue);
         }
 
         #endregion

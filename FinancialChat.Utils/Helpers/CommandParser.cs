@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace FinancialChat.Helpers
+namespace FinancialChat.Utils.Helpers
 {
     /// <summary>
     /// Command Parser class

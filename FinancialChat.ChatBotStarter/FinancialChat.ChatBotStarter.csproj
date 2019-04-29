@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{98A17083-9E88-4C7E-AF67-28EDC31A3335}</ProjectGuid>
+    <ProjectGuid>{A0FA7C82-7B49-4A71-B47D-2AFFF834FFA9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ChatBot</RootNamespace>
-    <AssemblyName>ChatBot</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>FinancialChat.ChatBotStarter</RootNamespace>
+    <AssemblyName>FinancialChat.ChatBotStarter</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -49,6 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FinancialChat.Utils\FinancialChat.Utils.csproj">
+      <Project>{8298bed8-4540-4135-8773-f916e34f218b}</Project>
+      <Name>FinancialChat.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

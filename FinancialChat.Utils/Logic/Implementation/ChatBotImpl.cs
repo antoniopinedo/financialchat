@@ -1,17 +1,26 @@
 ﻿using FileHelpers;
-using FinancialChat.Models;
+using FinancialChat.Utils.Models;
+using FinancialChat.Utils.Helpers;
 using System;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace ChatBot.Logic.Implementation
 {
-    class ChatBotImpl : IChatBot
+    /// <summary>
+    /// Implementation class for the chatbot interface
+    /// </summary>
+    public class ChatBotImpl : IChatBot
     {
-        //public void 
+        private readonly MessageBrokerFacade MQClient = new MessageBrokerFacade();
 
+        /// <summary>
+        /// Gets a quote for the stock symbol provided
+        /// </summary>
+        /// <param name="stockSymbol"></param>
+        /// <returns></returns>
         public string GetQuoteForStock(string stockSymbol)
         {
-            //TODO: Move this to the bot logic
             var engine = new FileHelperEngine<StockQuote>();
             WebClient client = new WebClient();
             var csvContent = client.DownloadString("https://stooq.com/q/l/?s=" + stockSymbol + "&f=sd2t2ohlcv&h&e=csv");
@@ -29,9 +38,20 @@ namespace ChatBot.Logic.Implementation
             return quoteMessage;
         }
 
+        public void ProcessMessage(string message)
+        {
+            StockMessage messageObject = JsonConvert.DeserializeObject<StockMessage>(message);
+
+            var quote = GetQuoteForStock(messageObject.Text);
+
+            messageObject.Text = quote;
+
+            MQClient.Send("stockResponse", JsonConvert.SerializeObject(messageObject));
+        }
+
         public void StartBot()
         {
-            throw new NotImplementedException();
+            MQClient.Receive("stockRequest", ProcessMessage);
         }
     }
 }
