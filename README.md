@@ -53,9 +53,9 @@ To configure and deploy the application, MSSQL and RabbitMQ services should be r
 
 To configure this application follow these steps:
 
-1. Modify the **web.config** file by changing the Connection String called *"DefaultConnection"* to point to your database server:
+1. Modify the **web.config** file by changing the Connection String called *"DefaultConnection"* to point to the specified database server, making sure to include a user with privileges on the database and the right password:
 ```
-connectionString="Server=.;Initial Catalog=FinancialChat;Persist Security Info=False;
+connectionString="Server=localhost;Initial Catalog=FinancialChat;Persist Security Info=False;
 User ID=test;Password=Pass1234;MultipleActiveResultSets=False;Encrypt=True;
 TrustServerCertificate=True;Connection Timeout=30;"
 ```
@@ -95,8 +95,9 @@ To deploy the application follow these steps:
 * [Bootstrap 3.4](https://getbootstrap.com/docs/3.4/) - HTML, CSS and JS framework
 
 
-## Known limitations and future improvement options
+## Known limitations and improvement options
 
+* Add unit tests to improve coverage closer to 100%
 * SignalR framework is based on WebSockets which allows a limited number of concurrent connections.  For escalability, Azure SignalR service can be used.
 * Automate UI tests using selenium framework
 * Include Unit Tests for Javascript files
