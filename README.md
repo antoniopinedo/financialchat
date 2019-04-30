@@ -61,16 +61,22 @@ TrustServerCertificate=True;Connection Timeout=30;"
 ```
 
 2. Create the RabbitMQ users 
+Create the username and password if needed.  RabbitMq can be configured to run without username and password, and the application supports it.
+Use the rabbitmqctl to create the user like this:
+```
+rabbitmqctl add_user myUser myPass
 ```
 
+3. Configure the RabbitMQ settings in **web.config** (in FinancialChat project) and **App.config** (FinancialChat.ChatBotStarter) files adding your RabbitMQ username and password:
+```
+  <appSettings>
+    <add key="mqHost" value="localhost" />
+    <add key="mqUser" value="test" />
+    <add key="password" value="Pass123" />
+  </appSettings>
 ```
 
-3. Configure the RabbitMQ settings in **web.config** file:
-```
-
-```
-
-4. In development environment, both Web (FinancialChat) and Console (FinancialChat.ChatBotStarter) applications should be set to start.
+4. In development environment, both Web and Console applications should be set to start.
 
 
 ### Deployment
