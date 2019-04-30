@@ -67,13 +67,20 @@ Use the rabbitmqctl to create the user like this:
 rabbitmqctl add_user myUser myPass
 ```
 
+Give permissions to the user on the Vhost with this command:
+```
+rabbitmqctl set_permissions -p /myvhost myUser ".*" ".*" ".*"
+```
+
 3. Configure the RabbitMQ settings in **web.config** (in FinancialChat project) and **App.config** (FinancialChat.ChatBotStarter) files adding your RabbitMQ username and password:
 ```
-  <appSettings>
-    <add key="mqHost" value="localhost" />
-    <add key="mqUser" value="test" />
-    <add key="password" value="Pass123" />
-  </appSettings>
+<appSettings>
+  <add key="mqHost" value="localhost" />
+  <add key="mqPort" value="5672" />
+  <add key="mqUser" value="test" />
+  <add key="mqPass" value="Pass1234" />
+  <add key="mqVhost" value="/" />
+</appSettings>
 ```
 
 4. In development environment, both Web and Console applications should be set to start.
