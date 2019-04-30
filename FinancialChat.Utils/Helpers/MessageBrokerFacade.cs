@@ -3,6 +3,7 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.MessagePatterns;
 using System;
 using System.Text;
+using System.Configuration;
 
 namespace FinancialChat.Utils.Helpers
 {
@@ -15,30 +16,39 @@ namespace FinancialChat.Utils.Helpers
         /// The connection
         /// </summary>
         private readonly IConnection connection;
-
-        /// <summary>
-        /// Constructor of the class with parameters
-        /// </summary>
-        /// <param name="hostName">The host or server name</param>
-        /// <param name="userName">User name</param>
-        /// <param name="password">String password</param>
-        public MessageBrokerFacade(string hostName, string userName, string password)
-        {
-            ConnectionFactory connectionFactory = new ConnectionFactory
-            {
-                HostName = hostName,
-                UserName = userName,
-                Password = password
-            };
-            connection = connectionFactory.CreateConnection();
-        }
-
+        
         /// <summary>
         /// Default constructor
         /// </summary>
         public MessageBrokerFacade()
         {
-            ConnectionFactory connectionFactory = new ConnectionFactory();
+            ConnectionFactory connectionFactory;
+            string hostName = ConfigurationManager.AppSettings["mqHost"];
+            int hostPort = 0;
+            int.TryParse(ConfigurationManager.AppSettings["mqPort"], out hostPort);
+            string userName = ConfigurationManager.AppSettings["mqUser"];
+            string password = ConfigurationManager.AppSettings["mqPass"];
+            string vhost = ConfigurationManager.AppSettings["mqVhost"];
+
+            // If there is configuration set
+            if (string.Empty != hostName && string.Empty != userName && string.Empty != password 
+                && string.Empty != vhost && hostPort != 0)
+            {
+                connectionFactory = new ConnectionFactory
+                {
+                    HostName = hostName,
+                    UserName = userName,
+                    Password = password,
+                    Port = hostPort,
+                    VirtualHost = vhost
+                };
+            }
+            else
+            {
+                // Create default connection factory
+                connectionFactory = new ConnectionFactory();
+            }
+
             connection = connectionFactory.CreateConnection();
         }
 
@@ -56,6 +66,8 @@ namespace FinancialChat.Utils.Helpers
 
                 // Publish the information in the queue
                 channel.BasicPublish(string.Empty, queue, null, Encoding.UTF8.GetBytes(data));
+
+                Console.WriteLine("Message Published: " + data);
             }
         }
 
@@ -79,6 +91,7 @@ namespace FinancialChat.Utils.Helpers
                     // Get the message and execute the action
                     string messageContent = Encoding.UTF8.GetString(basicDeliveryEventArgs.Body);
                     process(messageContent);
+                    Console.WriteLine("Message Received: " + messageContent);
 
                     // Acknowledge receiving the message so it is dequeued
                     subscription.Ack(basicDeliveryEventArgs);

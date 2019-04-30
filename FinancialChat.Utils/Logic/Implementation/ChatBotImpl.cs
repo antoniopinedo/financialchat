@@ -17,8 +17,8 @@ namespace ChatBot.Logic.Implementation
         /// <summary>
         /// Gets a quote for the stock symbol provided
         /// </summary>
-        /// <param name="stockSymbol"></param>
-        /// <returns></returns>
+        /// <param name="stockSymbol">The stock symbol</param>
+        /// <returns>A quote string</returns>
         public string GetQuoteForStock(string stockSymbol)
         {
             var engine = new FileHelperEngine<StockQuote>();
@@ -38,6 +38,10 @@ namespace ChatBot.Logic.Implementation
             return quoteMessage;
         }
 
+        /// <summary>
+        /// Process a message and enqueues in another message queue
+        /// </summary>
+        /// <param name="message"></param>
         public void ProcessMessage(string message)
         {
             StockMessage messageObject = JsonConvert.DeserializeObject<StockMessage>(message);
@@ -49,6 +53,9 @@ namespace ChatBot.Logic.Implementation
             MQClient.Send("stockResponse", JsonConvert.SerializeObject(messageObject));
         }
 
+        /// <summary>
+        /// Starts the listener
+        /// </summary>
         public void StartBot()
         {
             MQClient.Receive("stockRequest", ProcessMessage);
