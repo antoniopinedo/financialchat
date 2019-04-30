@@ -7,6 +7,7 @@ namespace FinancialChat.Utils.Helpers
     /// </summary>
     public class CommandParser
     {
+        // This regex string recognizes a command and groups the parts
         private const string regEx = @"^(\/stock=)([a-zA-Z0-9:\.^_]+)$";
 
         /// <summary>

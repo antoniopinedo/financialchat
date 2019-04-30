@@ -1,13 +1,12 @@
 ﻿using ChatBot.Logic;
 using ChatBot.Logic.Implementation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialChat.ChatBotStarter
 {
+    /// <summary>
+    /// Chat bot started application
+    /// </summary>
     class Program
     {
         static void Main(string[] args)

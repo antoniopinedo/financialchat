@@ -18,3 +18,5 @@
 /FinancialChat.Database/bin/Debug
 /FinancialChat.Database/obj/Debug
 /FinancialChat.Database/Import Schema Logs
+/FinancialChat.Database
+/FinancialChat.Tests/FakesAssemblies
